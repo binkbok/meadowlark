@@ -5,10 +5,14 @@ var app = express();
 var handlebars = require('express-handlebars')
   .create({defaultLayout:'main'});
 
+var fortune = require('./lib/fortune.js');
+
 app.engine('handlebars',handlebars.engine);
 app.set('view engine','handlebars');
 
 app.set('port',process.env.PORT || 3000);
+
+app.use(express.static(__dirname + '/public'));
 
 
 app.get('/',function(req,res){
@@ -16,7 +20,7 @@ app.get('/',function(req,res){
 });
 
 app.get('/about',function(req,res){
-  res.render('about');
+  res.render('about', {fortune:fortune.getFortune() });
 });
 
 //custom 404 page
